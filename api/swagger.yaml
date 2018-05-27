@@ -1,0 +1,85 @@
+swagger: "2.0"
+info:
+  description: "mocam-seminar-swagger-test-yml"
+  version: "1.0"
+  title: "mocam-example"
+host: "localhost:3000"
+basePath: "/api/v1.0"
+schemes:
+- "http"
+- "https"
+paths:
+  x-swagger-router-controller: "TagForUser"
+  /user/{user_name}:
+    post:
+      tags:
+      - "tag-for-user"
+      summary: "api-summary"
+      description: "swagger-example"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      parameters:
+      - name: "user_name"
+        in: "path"
+        description: "spec for user_name"
+        required: true
+        type: "string"
+      - name: "offest"
+        in: "query"
+        description: "offset for pagination"
+        required: false
+        type: "integer"
+      - name: "mc-request-token"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "user"
+        required: false
+        schema:
+          $ref: "#/definitions/user"
+      responses:
+        200:
+          description: "status code 200"
+          schema:
+            $ref: "#/definitions/user"
+        401:
+          description: "Authentication Error"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+        500:
+          description: "status code 500"
+          schema:
+            $ref: "#/definitions/ErrorResponse" 
+     
+definitions:
+  user:
+    type: "object"
+    required:
+    - "username"
+    properties:
+      id:
+        type: "integer"
+        description: "The user ID."
+      username:
+        type: "string"
+        description: "The user name."
+    example:
+      id: 0
+      username: "username"
+  SuccessResponse:
+      properties:
+        code:
+          type: integer
+        status:
+          type: string
+        message:
+          type: string
+  ErrorResponse:
+    properties:
+      code:
+        type: integer
+      status:
+        type: string
+      message:
+        type: string

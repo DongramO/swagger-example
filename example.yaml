@@ -1,0 +1,103 @@
+swagger: "2.0"
+info:
+  title: mocam-example
+  version: "1.0"
+  description: "mocam-seminar-swagger-test-yml"
+
+host: localhost:3000
+basePath: /api/v1.0
+schemes:
+  - http
+  - https
+
+# 클라이언트에게 보낼 Content-type을 설정해 줍니다.
+#consume:
+#  - application/json
+
+# 클라이언트로 부터 받을 Content-type을 설정해 줍니다.
+#produces:
+#  - apllication/json
+
+# paths 명령어 하위로 url 경로를 적어줍니다.
+paths:
+  /user/{user_name}:
+  # 각 url에 대해 어떤 http method를 사용할지 적어줍니다.
+    post:
+      summary: api-summary
+      description: swagger-example
+      #produces: application/json
+      consumes:
+        - application/x-www-form-urlencoded
+      tags:
+        - tag-for-user
+      parameters:
+      # path parameter 설정하기
+        - in: path
+          name: user_name
+          type: string
+          required: true
+          description: spec for user_name
+      # QueryString 설정하기
+        - in: query
+          name: offest
+          type: integer
+          description: offset for pagination 
+      # header parameters
+        - in: header
+          name: mc-request-token
+          type: string
+          required: true
+      # request body 설정하기
+      # 1. x-www-form-urlencoded 2. form-data
+      # consumes를 설정해줘야 한다 => 최상단에 설정해주면 전체적으로 반영되는듯 하다.
+      # form 데이터 안에서는 $ref로 items값을 지정할 수 없습니다.
+      # { 'username' : 'dongsu', 'id': 'Dongineer'}
+      # - in: formData
+      #   name: name
+      #   type: string
+      #   description: user's name
+      # case1
+        - in: body
+          name : user
+          schema:
+            type: object
+            required:
+              - userName
+            properties:
+              username:
+                type: string
+              password:
+                type: string
+      responses:
+      # status code에 따라 응답 메시지를 설정해 줍니다.
+        200:
+        # 모델을 만들어 놓고 참조하는 방식
+          description: status code 200
+          schema:
+            $ref: "#/definitions/user"
+        300:
+        # 직접 모델과 예제 데이터를 만드는 방식
+          description: status code 300
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 4
+              name:
+                type: string
+                example: mocam-example-name 
+    
+definitions:
+  user:
+    type: object
+    required:
+      - username
+    properties:
+      id:
+        type: integer
+        description: The user ID.
+      username:
+        type: string
+        description: The user name.
+  
