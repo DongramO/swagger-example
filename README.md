@@ -1,4 +1,4 @@
-# Swagger generated server
+# Swagger를 알아보자!
 
 #### 시작하기 전에
 
